@@ -141,7 +141,7 @@ class MainActivity : Activity() {
             setHintTextColor(muted)
             setTextColor(white)
             textSize = 15f
-            singleLine = true
+            isSingleLine = true
             setPadding(dp(16), 0, dp(16), 0)
             background = rounded(panel, 16)
         }
@@ -211,7 +211,8 @@ class MainActivity : Activity() {
             gravity = Gravity.CENTER
             setLineSpacing(dp(8).toFloat(), 1f)
         }
-        lyricsCard.addView(lyricsView, LinearLayout.LayoutParams(-1, -2).apply { minHeight = dp(190) })
+        lyricsView.minHeight = dp(190)
+        lyricsCard.addView(lyricsView, LinearLayout.LayoutParams(-1, -2))
         page.addView(lyricsCard)
 
         val libraryHeader = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
