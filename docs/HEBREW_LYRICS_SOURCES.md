@@ -51,3 +51,7 @@ The page lists song titles and identifies their lyrics and melodies as public do
 Project Ben-Yehuda's public-domain dump is separate from the full Project Ben-Yehuda website database. The project's own policy says some website entries are only displayed there under special permission and cannot be redistributed. Only the public-domain dump / individually marked public-domain works should be imported.
 
 The source registry is stored in `app/src/main/assets/lyrics_sources.json`. The current lyrics catalog remains intentionally limited to verified texts; adding a source to the registry does not mean its entire content has been imported.
+
+## Additional song imported
+
+- **שיר העבודה והמלאכה — חיים נחמן ביאליק**: added as plain-text lyrics from https://benyehuda.org/read/7553. The work page marks it "נחלת הכלל" and tags it as a composed song. The entry is keyed by title and artist, with a title-only fallback.
