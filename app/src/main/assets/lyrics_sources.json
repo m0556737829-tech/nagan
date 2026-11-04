@@ -49,6 +49,16 @@
       "license": "Public domain, explicitly marked on the work page",
       "status": "imported",
       "attribution": "Project Ben-Yehuda volunteers; https://benyehuda.org"
+    },
+    {
+      "id": "project-ben-yehuda-nadneda",
+      "name": "Project Ben-Yehuda — Nadneda",
+      "url": "https://benyehuda.org/read/6768",
+      "language": "he",
+      "content": "Short Hebrew children's song/poem by Haim Nahman Bialik.",
+      "license": "Public domain, explicitly marked on the work page",
+      "status": "imported",
+      "attribution": "Project Ben-Yehuda; https://benyehuda.org"
     }
   ]
 }
