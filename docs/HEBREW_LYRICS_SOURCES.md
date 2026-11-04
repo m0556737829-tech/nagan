@@ -29,3 +29,25 @@ The dataset's license label is not sufficient evidence that the dataset publishe
 ## Current limitation
 
 The bundled Hebrew catalog is intentionally small. It is better to ship a small verified catalog than to silently include thousands of lyrics with unclear rights. The in-app manual editor remains available for lyrics the user is authorized to use.
+
+## Additional Hebrew sources added to the project
+
+### Project Ben-Yehuda public-domain dump
+
+Repository: https://github.com/projectbenyehuda/public_domain_dump
+
+The repository describes a dump of more than 20,000 Hebrew public-domain works, supplied as UTF-8 text files with a catalogue of titles, authors, genres and paths. Its README and LICENSE state that the included data files are public domain and may be reused freely. This is now registered in `app/src/main/assets/lyrics_sources.json`.
+
+This is a much stronger source for expanding the Hebrew collection than copying from lyric websites. The catalogue includes literary works, not only songs, so entries must be filtered for actual song/poem suitability before import.
+
+### Wikisource public-domain song index
+
+Index: https://he.wikisource.org/wiki/ויקיטקסט:שירים_ללא_זכויות_יוצרים
+
+The page lists song titles and identifies their lyrics and melodies as public domain. It is useful for discovering additional Hebrew works, but it is an index rather than a complete downloadable lyric corpus. Each full text still needs to be located and verified before it is copied into NAGAN.
+
+### Important distinction
+
+Project Ben-Yehuda's public-domain dump is separate from the full Project Ben-Yehuda website database. The project's own policy says some website entries are only displayed there under special permission and cannot be redistributed. Only the public-domain dump / individually marked public-domain works should be imported.
+
+The source registry is stored in `app/src/main/assets/lyrics_sources.json`. The current lyrics catalog remains intentionally limited to verified texts; adding a source to the registry does not mean its entire content has been imported.
