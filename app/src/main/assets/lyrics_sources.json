@@ -1,0 +1,44 @@
+{
+  "_about": "Source registry for the offline NAGAN lyrics catalog. Sources listed as candidates are not automatically copied; each work must be checked individually and imported only when its redistribution status is clear.",
+  "sources": [
+    {
+      "id": "project-ben-yehuda-public-domain",
+      "name": "Project Ben-Yehuda public-domain dump",
+      "url": "https://github.com/projectbenyehuda/public_domain_dump",
+      "language": "he",
+      "content": "Over 20,000 Hebrew public-domain literary works in plaintext UTF-8, with a searchable pseudocatalogue.",
+      "license": "Public domain, according to the repository README and LICENSE",
+      "status": "approved-source-candidate",
+      "importPolicy": "Import only works that are clearly song lyrics or poems suitable for singing, and retain author/title/source attribution."
+    },
+    {
+      "id": "wikisource-public-domain-songs",
+      "name": "Wikisource list of songs without copyright",
+      "url": "https://he.wikisource.org/wiki/ויקיטקסט:שירים_ללא_זכויות_יוצרים",
+      "language": "he",
+      "content": "A title index identifying works whose lyrics and melodies are listed as public domain; it is an index, not a complete lyrics corpus.",
+      "license": "Verify the individual text source and work metadata before importing",
+      "status": "candidate-index",
+      "importPolicy": "Use as a discovery index only; locate and verify the full text and authorship before adding it to the APK."
+    },
+    {
+      "id": "project-ben-yehuda-hatikva",
+      "name": "Project Ben-Yehuda — Hatikva collection",
+      "url": "https://benyehuda.org/collections/6839",
+      "language": "he",
+      "content": "Source for the currently bundled first stanza of Hatikva.",
+      "license": "Public domain as marked by Project Ben-Yehuda for this work",
+      "status": "imported"
+    },
+    {
+      "id": "hebrew-shironet-kaggle",
+      "name": "Hebrew Songs Lyrics dataset (Shironet-derived)",
+      "url": "https://www.kaggle.com/datasets/guybarash/hebrew-songs-lyrics",
+      "language": "he",
+      "content": "Approximately 15,000 Israeli songs scraped from Shironet.",
+      "license": "Dataset is labeled CC BY-SA 4.0, but underlying lyrics rights/relicensing authority are not established",
+      "status": "blocked-pending-rights-proof",
+      "importPolicy": "Do not bundle until permission or documented redistribution rights for the underlying lyrics are obtained."
+    }
+  ]
+}
