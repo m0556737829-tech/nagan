@@ -221,6 +221,11 @@ class MainActivity : Activity() {
         page.addView(libraryHeader)
         songList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         page.addView(songList)
+
+        val aboutButton = actionButton("ⓘ  אודות NAGAN", false) { showAbout() }
+        page.addView(aboutButton, LinearLayout.LayoutParams(-1, dp(48)).apply {
+            topMargin = dp(22)
+        })
     }
 
     private fun loadSongs() {
@@ -483,6 +488,45 @@ class MainActivity : Activity() {
         try { player?.stop() } catch (_: Exception) { }
         try { player?.release() } catch (_: Exception) { }
         player = null
+    }
+
+    private fun showAbout() {
+        val content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding(dp(24), dp(18), dp(24), dp(8))
+        }
+
+        val logo = TextView(this).apply {
+            text = "M.K."
+            textSize = 25f
+            setTextColor(white)
+            gravity = Gravity.CENTER
+            typeface = Typeface.create("sans-serif", Typeface.BOLD)
+            background = GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                intArrayOf(accent, Color.rgb(34, 190, 176))
+            ).apply {
+                shape = GradientDrawable.OVAL
+                setStroke(dp(2), Color.rgb(225, 228, 255))
+            }
+        }
+        content.addView(logo, LinearLayout.LayoutParams(dp(92), dp(92)))
+        content.addView(text("NAGAN", 25, white, true).apply {
+            letterSpacing = 0.14f
+            setPadding(0, dp(14), 0, dp(6))
+        })
+        content.addView(text("נגן מוזיקה אופליין", 14, muted, false))
+        content.addView(text("נבנה על ידי M.K.\nכל הזכויות שמורות", 16, white, true).apply {
+            gravity = Gravity.CENTER
+            setLineSpacing(dp(5).toFloat(), 1f)
+            setPadding(0, dp(22), 0, dp(8))
+        })
+
+        AlertDialog.Builder(this)
+            .setView(content)
+            .setPositiveButton("סגירה", null)
+            .show()
     }
 
     private fun sectionTitle(label: String): TextView =
