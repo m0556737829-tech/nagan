@@ -59,6 +59,16 @@
       "license": "Public domain, explicitly marked on the work page",
       "status": "imported",
       "attribution": "Project Ben-Yehuda; https://benyehuda.org"
+    },
+    {
+      "id": "project-ben-yehuda-baginat-hayarak",
+      "name": "Project Ben-Yehuda — Baginat Hayarak",
+      "url": "https://benyehuda.org/read/9013",
+      "language": "he",
+      "content": "Hebrew children's song/poem by Haim Nahman Bialik.",
+      "license": "Public domain, explicitly marked on the work page",
+      "status": "imported",
+      "attribution": "Project Ben-Yehuda; https://benyehuda.org"
     }
   ]
 }
