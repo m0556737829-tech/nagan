@@ -46,11 +46,11 @@ private data class Song(
 private data class LyricLine(val timeMs: Long, val text: String)
 
 class MainActivity : Activity() {
-    private val bg = Color.rgb(9, 11, 18)
-    private val panel = Color.rgb(22, 26, 39)
-    private val accent = Color.rgb(115, 92, 255)
-    private val muted = Color.rgb(153, 160, 180)
-    private val white = Color.rgb(246, 247, 255)
+    private val bg = Color.rgb(18, 18, 18)
+    private val panel = Color.rgb(40, 40, 40)
+    private val accent = Color.rgb(29, 185, 84)
+    private val muted = Color.rgb(179, 179, 179)
+    private val white = Color.rgb(255, 255, 255)
 
     private lateinit var songList: LinearLayout
     private lateinit var lyricsView: TextView
@@ -115,37 +115,46 @@ class MainActivity : Activity() {
     }
 
     private fun buildScreen() {
-        val scroll = ScrollView(this).apply { setBackgroundColor(bg); isFillViewport = true }
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(bg)
+        }
+        val scroll = ScrollView(this).apply {
+            setBackgroundColor(bg)
+            isFillViewport = true
+        }
         val page = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(20), dp(22), dp(20), dp(32))
+            setPadding(dp(18), dp(18), dp(18), dp(24))
         }
         scroll.addView(page)
-        setContentView(scroll)
+        root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
+        setContentView(root)
 
-        val brandRow = LinearLayout(this).apply {
+        // Spotify-inspired top bar: compact branding and About action.
+        val topBar = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, dp(12))
         }
-        val brand = text("NAGAN", 27, white, true)
-        brand.letterSpacing = 0.12f
-        brandRow.addView(brand, LinearLayout.LayoutParams(0, -2, 1f))
-        brandRow.addView(text("OFFLINE MUSIC", 10, muted, true))
-        page.addView(brandRow)
-        page.addView(text("המוזיקה שלך. המילים שלך. בלי אינטרנט.", 14, muted, false).apply {
-            setPadding(0, dp(5), 0, dp(18))
+        val brand = text("NAGAN", 26, white, true).apply { letterSpacing = 0.08f }
+        topBar.addView(brand, LinearLayout.LayoutParams(0, -2, 1f))
+        topBar.addView(actionButton("ⓘ  אודות", false) { showAbout() })
+        page.addView(topBar)
+        page.addView(text("המוזיקה שלך, תמיד איתך", 14, muted, false).apply {
+            setPadding(0, 0, 0, dp(18))
         })
 
         searchBox = EditText(this).apply {
-            hint = "חיפוש שיר או זמר"
+            hint = "⌕   חיפוש שיר, אמן או אלבום"
             setHintTextColor(muted)
             setTextColor(white)
             textSize = 15f
             isSingleLine = true
             setPadding(dp(16), 0, dp(16), 0)
-            background = rounded(panel, 16)
+            background = rounded(Color.rgb(45, 45, 45), 28)
         }
-        page.addView(searchBox, LinearLayout.LayoutParams(-1, dp(50)))
+        page.addView(searchBox, LinearLayout.LayoutParams(-1, dp(48)))
         searchBox.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { renderSongs(s?.toString().orEmpty()) }
@@ -155,18 +164,21 @@ class MainActivity : Activity() {
         page.addView(sectionTitle("מתנגן עכשיו"))
         val playerCard = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            background = rounded(panel, 22)
-            setPadding(dp(18), dp(18), dp(18), dp(18))
+            background = rounded(Color.rgb(32, 32, 32), 18)
+            setPadding(dp(16), dp(16), dp(16), dp(16))
         }
         val cover = TextView(this).apply {
             text = "♫"
-            textSize = 42f
+            textSize = 54f
             gravity = Gravity.CENTER
             setTextColor(white)
-            background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(accent, Color.rgb(40, 190, 180))).apply { cornerRadius = dp(18).toFloat() }
+            background = GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                intArrayOf(Color.rgb(29, 185, 84), Color.rgb(15, 90, 52), Color.rgb(35, 35, 35))
+            ).apply { cornerRadius = dp(14).toFloat() }
         }
-        playerCard.addView(cover, LinearLayout.LayoutParams(-1, dp(112)))
-        titleView = text("בחר שיר מהספרייה", 20, white, true).apply { setPadding(0, dp(15), 0, dp(3)) }
+        playerCard.addView(cover, LinearLayout.LayoutParams(-1, dp(190)))
+        titleView = text("בחר שיר מהספרייה", 20, white, true).apply { setPadding(0, dp(16), 0, dp(3)) }
         artistView = text("המוזיקה המקומית שלך תופיע כאן", 13, muted, false)
         playerCard.addView(titleView)
         playerCard.addView(artistView)
@@ -174,7 +186,7 @@ class MainActivity : Activity() {
             max = 1000
             progressTintList = android.content.res.ColorStateList.valueOf(accent)
             thumbTintList = android.content.res.ColorStateList.valueOf(white)
-            progressBackgroundTintList = android.content.res.ColorStateList.valueOf(Color.rgb(65, 70, 88))
+            progressBackgroundTintList = android.content.res.ColorStateList.valueOf(Color.rgb(90, 90, 90))
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) { userSeeking = true }
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -185,15 +197,21 @@ class MainActivity : Activity() {
             })
         }
         playerCard.addView(seekBar, LinearLayout.LayoutParams(-1, dp(34)))
-        val controls = LinearLayout(this).apply { gravity = Gravity.CENTER; orientation = LinearLayout.HORIZONTAL }
+        val controls = LinearLayout(this).apply {
+            gravity = Gravity.CENTER
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, dp(4), 0, dp(4))
+        }
         val prev = actionButton("⏮", false) { playAdjacent(-1) }
         playButton = actionButton("▶", true) { togglePlayback() }
         val next = actionButton("⏭", false) { playAdjacent(1) }
-        controls.addView(prev)
-        controls.addView(playButton, LinearLayout.LayoutParams(dp(76), dp(56)).apply { setMargins(dp(18), 0, dp(18), 0) })
-        controls.addView(next)
+        controls.addView(prev, LinearLayout.LayoutParams(dp(62), dp(48)))
+        controls.addView(playButton, LinearLayout.LayoutParams(dp(78), dp(52)).apply {
+            setMargins(dp(22), 0, dp(22), 0)
+        })
+        controls.addView(next, LinearLayout.LayoutParams(dp(62), dp(48)))
         playerCard.addView(controls)
-        page.addView(playerCard, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
+        page.addView(playerCard, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
 
         val lyricsHeader = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -204,29 +222,67 @@ class MainActivity : Activity() {
         page.addView(lyricsHeader)
         val lyricsCard = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            background = rounded(Color.rgb(17, 20, 31), 20)
+            background = rounded(Color.rgb(32, 32, 32), 16)
             setPadding(dp(18), dp(18), dp(18), dp(18))
         }
-        lyricsView = text("כאן יופיעו מילות השיר.\n\nאפשר להוסיף מילים משלך — הן יישמרו במכשיר ויהיו זמינות גם באופליין.", 16, muted, false).apply {
+        lyricsView = text("כאן יופיעו מילות השיר.\\n\\nאפשר להוסיף מילים משלך — הן יישמרו במכשיר ויהיו זמינות גם באופליין.", 15, muted, false).apply {
             gravity = Gravity.CENTER
             setLineSpacing(dp(8).toFloat(), 1f)
         }
-        lyricsView.minHeight = dp(190)
+        lyricsView.minHeight = dp(170)
         lyricsCard.addView(lyricsView, LinearLayout.LayoutParams(-1, -2))
         page.addView(lyricsCard)
 
-        val libraryHeader = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
-        libraryHeader.addView(sectionTitle("הספרייה שלי"), LinearLayout.LayoutParams(0, -2, 1f))
+        val libraryHeader = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        libraryHeader.addView(sectionTitle("כל השירים"), LinearLayout.LayoutParams(0, -2, 1f))
         libraryCount = text("0 שירים", 12, muted, false)
         libraryHeader.addView(libraryCount)
         page.addView(libraryHeader)
         songList = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         page.addView(songList)
 
-        val aboutButton = actionButton("ⓘ  אודות NAGAN", false) { showAbout() }
-        page.addView(aboutButton, LinearLayout.LayoutParams(-1, dp(48)).apply {
-            topMargin = dp(22)
-        })
+        // Fixed bottom navigation, always visible while the page scrolls.
+        val nav = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            setBackgroundColor(Color.rgb(12, 12, 12))
+            setPadding(dp(5), dp(7), dp(5), dp(7))
+            elevation = dp(12).toFloat()
+        }
+        fun navItem(icon: String, label: String, action: () -> Unit) {
+            val item = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER
+                setPadding(dp(4), dp(3), dp(4), dp(3))
+                isClickable = true
+                isFocusable = true
+                setOnClickListener { action() }
+            }
+            item.addView(text(icon, 20, accent, true).apply { gravity = Gravity.CENTER })
+            item.addView(text(label, 10, muted, true).apply {
+                gravity = Gravity.CENTER
+                setPadding(0, dp(3), 0, 0)
+            })
+            nav.addView(item, LinearLayout.LayoutParams(0, dp(52), 1f))
+        }
+        navItem("⌂", "בית") { scroll.smoothScrollTo(0, 0) }
+        navItem("⌕", "חיפוש") {
+            scroll.smoothScrollTo(0, searchBox.top)
+            searchBox.requestFocus()
+        }
+        navItem("♫", "ספרייה") {
+            scroll.post { scroll.smoothScrollTo(0, libraryHeader.top) }
+        }
+        navItem("▤", "קבצים") {
+            scroll.post { scroll.smoothScrollTo(0, songList.top) }
+        }
+        navItem("☰", "עוד") {
+            scroll.post { scroll.smoothScrollTo(0, lyricsHeader.top) }
+        }
+        root.addView(nav, LinearLayout.LayoutParams(-1, dp(66)))
     }
 
     private fun loadSongs() {
@@ -279,7 +335,7 @@ class MainActivity : Activity() {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(dp(12), dp(12), dp(12), dp(12))
-                background = rounded(panel, 14)
+                background = rounded(Color.rgb(38, 38, 38), 12)
                 isClickable = true
                 isFocusable = true
                 setOnClickListener { playSong(song) }
@@ -547,7 +603,7 @@ class MainActivity : Activity() {
             textSize = if (primary) 19f else 12f
             isAllCaps = false
             setTextColor(white)
-            background = rounded(if (primary) accent else Color.rgb(43, 48, 66), 18)
+            background = rounded(if (primary) accent else Color.rgb(55, 55, 55), 18)
             setPadding(dp(12), dp(5), dp(12), dp(5))
             setOnClickListener { action() }
         }
