@@ -39,6 +39,16 @@
       "license": "Dataset is labeled CC BY-SA 4.0, but underlying lyrics rights/relicensing authority are not established",
       "status": "blocked-pending-rights-proof",
       "importPolicy": "Do not bundle until permission or documented redistribution rights for the underlying lyrics are obtained."
+    },
+    {
+      "id": "project-ben-yehuda-work-song",
+      "name": "Project Ben-Yehuda — Shir HaAvoda VeHaMelacha",
+      "url": "https://benyehuda.org/read/7553",
+      "language": "he",
+      "content": "Public-domain Hebrew song by Haim Nahman Bialik; page marks it public domain and tags it as a composed song.",
+      "license": "Public domain, explicitly marked on the work page",
+      "status": "imported",
+      "attribution": "Project Ben-Yehuda volunteers; https://benyehuda.org"
     }
   ]
 }
