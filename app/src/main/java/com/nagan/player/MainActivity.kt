@@ -365,9 +365,30 @@ class MainActivity : Activity() {
         return try {
             val root = JSONObject(assets.open("lyrics.json").bufferedReader().use { it.readText() })
             val entries = root.optJSONObject("songs") ?: return null
-            val key = "${song.title.trim().lowercase(Locale.ROOT)}|${song.artist.trim().lowercase(Locale.ROOT)}"
-            entries.optString(key).takeIf { it.isNotBlank() }
+            val titleKey = normalizeLyricsKey(song.title)
+            val artistKey = normalizeLyricsKey(song.artist)
+            val exactKey = "$titleKey|$artistKey"
+            entries.optString(exactKey).takeIf { it.isNotBlank() }?.let { return it }
+
+            // Fallback to title-only matching: Android music tags often use different artist names.
+            val keys = entries.keys()
+            while (keys.hasNext()) {
+                val candidateKey = keys.next()
+                val candidateTitle = normalizeLyricsKey(candidateKey.substringBefore("|"))
+                if (candidateTitle == titleKey) {
+                    entries.optString(candidateKey).takeIf { it.isNotBlank() }?.let { return it }
+                }
+            }
+            null
         } catch (_: Exception) { null }
+    }
+
+    private fun normalizeLyricsKey(value: String): String {
+        val normalized = java.text.Normalizer.normalize(value.trim().lowercase(Locale.ROOT), java.text.Normalizer.Form.NFD)
+        return normalized
+            .replace(Regex("\\p{Mn}+"), "")
+            .replace(Regex("[^\\p{L}\\p{N}]+"), " ")
+            .trim()
     }
 
     private fun parseLyrics(raw: String): List<LyricLine> {
